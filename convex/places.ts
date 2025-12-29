@@ -68,6 +68,21 @@ export const createPlace = mutation({
     },
 });
 
+export const deletePlace = mutation({
+    args:{placeId: v.id('places')},
+    handler: async(ctx, args)=>{
+             const user = await authComponent.safeGetAuthUser(ctx);
+
+        if (!user) {
+            throw new ConvexError("Not authenticated");
+        }
+
+        await ctx.db.delete("places", args.placeId);
+
+    }
+
+})
+
 export const generateImageUploadUrl = mutation({
   args:{},
   handler: async(ctx)=>{

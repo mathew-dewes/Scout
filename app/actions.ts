@@ -8,6 +8,7 @@ import { redirect } from "next/navigation";
 import { getToken } from "@/lib/auth-server";
 import { updateTag } from "next/cache";
 import { placeSchema } from "./schemas/place";
+import { Id } from "@/convex/_generated/dataModel";
 
 export async function createPlaceAction(values: z.infer<typeof placeSchema>) {
 
@@ -68,3 +69,15 @@ export async function createPlaceAction(values: z.infer<typeof placeSchema>) {
 
 
 }
+
+
+export  async function deletePlaceAction(formData: FormData){
+const placeId = formData.get("placeId") as Id<"places">;
+const imageStorageId = formData.get("imageStorageId") as Id<"_storage">;
+const token = await getToken();
+ await fetchMutation(api.places.deletePlace, {placeId},{ token } );
+ await fetchMutation(api.images.deleteById, {storageId: imageStorageId});
+ updateTag('place');
+ redirect('/explore')
+}
+

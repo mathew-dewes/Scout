@@ -1,13 +1,13 @@
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
-// import { getToken } from "@/lib/auth-server";
 import { fetchQuery } from "convex/nextjs";
 import { ArrowLeft } from "lucide-react";
 import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
+import DeletePlaceButton from "@/components/web/DeletePlaceButton";
 
 
 interface PlaceIdRouteProps {
@@ -34,8 +34,6 @@ export async function generateMetadata({params}: PlaceIdRouteProps): Promise<Met
 
 export default async function PlacePage({params}: PlaceIdRouteProps){
     const { placeId} = await params;
-    //  const token = await getToken();
-
      const place = await fetchQuery(api.places.getPlaceById, {placeId});
 
      if (!place) {
@@ -64,7 +62,13 @@ export default async function PlacePage({params}: PlaceIdRouteProps){
             </div>
 
             <div className="space-y-4 flex flex-col">
-                <h1 className="text-4xl font-bold tracking-tight text-foreground">{place.description}</h1>
+                <h1 className="text-4xl font-bold tracking-tight text-foreground">{place.name}</h1>
+                <div className="flex gap-3 justify-end">
+                    <Button variant={'secondary'}>Edit</Button>
+                    <DeletePlaceButton placeId={placeId} imageStorageId={place.imageStorageId}/>
+    
+                </div>
+            
                 {/* <div className="flex items-center gap-2">
                        <p className="text-sm text-muted-foreground">Posted on: {new Date(post._creationTime).toLocaleDateString('en-NZ')}</p>
 
@@ -74,6 +78,7 @@ export default async function PlacePage({params}: PlaceIdRouteProps){
                 </div> */}
              
             </div>
+
 
             <Separator className="my-8" />
 
