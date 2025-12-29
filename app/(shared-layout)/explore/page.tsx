@@ -1,5 +1,6 @@
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import ExploreFilters from "@/components/web/ExploreFilter";
 // import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/convex/_generated/api";
 import { fetchQuery } from "convex/nextjs";
@@ -25,8 +26,13 @@ export default function ExplorePage(){
             <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">Explore</h1>
             <p className="pt-4 max-w-2xl mx-auto text-xl text-muted-foreground">Find popular activities, restaurants & Cafes around New Zealand!</p>
         </div>
+        <div className="mb-8">
+            <p className="mb-2">Fitlers:</p>
+      <ExploreFilters/>
+        </div>
+  
         {/* <Suspense fallback={<SkeletonLoadingUi/>}> */}
-        <LoadPlaceList/>
+        <PlaceList/>
         {/* </Suspense> */}
 
 
@@ -36,7 +42,7 @@ export default function ExplorePage(){
 }
 
 
-async function LoadPlaceList(){
+async function PlaceList(){
    "use cache";
    cacheLife("hours");
    cacheTag('place');
