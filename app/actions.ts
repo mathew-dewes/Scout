@@ -11,6 +11,7 @@ import { placeSchema } from "./schemas/place";
 
 export async function createPlaceAction(values: z.infer<typeof placeSchema>) {
 
+console.log(values);
 
 
     try {
@@ -63,9 +64,9 @@ export async function createPlaceAction(values: z.infer<typeof placeSchema>) {
         }
     }
 
-       updateTag('blog');
+       updateTag('place');
 
-    redirect('/blog');
+    redirect('/explore');
 
 
 
