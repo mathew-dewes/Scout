@@ -18,8 +18,8 @@ export function Navbar() {
         <nav className="w-full py-5 flex items-center justify-between">
             <div className="flex items-center gap-8">
                 <Link href={'/'}>
-                    <h1 className="text-3xl font-bold">Scout
-                        <span className="text-primary">Pro</span>
+                    <h1 className="text-3xl font-bold flex gap-1">Scout
+                        <span className="text-primary">NZ</span>
                     </h1></Link>
                 <div className="flex items-center gap-2">
                     <Link className={buttonVariants({ variant: "ghost" })} href={'/'}>Home</Link>

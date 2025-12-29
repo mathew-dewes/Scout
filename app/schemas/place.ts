@@ -2,9 +2,22 @@ import z from "zod"
 
 export const placeSchema = z.object({
     name: z.string().min(3).max(50),
+    location: z.string().max(500),
+    status: z.string(),
+    category: z.string(),
     description: z.string().min(10).max(500),
-    location:z.string().max(500),
-    category:z.string(),
     image: z.instanceof(File),
-    status:z.string()
+
 })
+
+// export default defineSchema({
+//     places: defineTable({
+//         name: v.string(),
+//         location: v.string(),
+//         status: v.string(),
+//         category: v.string(),
+//         description: v.string(),
+//         imageStorageId: v.optional(v.id('_storage')),
+
+//     })
+// })

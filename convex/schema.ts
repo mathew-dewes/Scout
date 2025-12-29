@@ -10,5 +10,13 @@ export default defineSchema({
         description: v.string(),
         imageStorageId: v.optional(v.id('_storage')),
 
+    }),
+
+    tasks: defineTable({
+        isCompleted: v.boolean(),
+        text: v.string(),
+        
     })
-})
+});
+
+

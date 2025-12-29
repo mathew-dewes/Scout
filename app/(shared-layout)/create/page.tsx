@@ -35,9 +35,8 @@ export default function CreateRoute(){
 
         function onSubmit(values: z.infer<typeof placeSchema>){
             startTransition(async ()=>{
- 
-        console.log("Hey this runs on the client side");
-
+                console.log(values);
+                
         await createPlaceAction(values);
   
             })
