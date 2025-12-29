@@ -17,16 +17,16 @@ category: "Web development",
 authors: [{name: "Mathew Dewes"}]
 }
 
-export default function BlogPage(){
+export default function ExplorePage(){
 
     return (
      <div className="py-12">
         <div className="text-center pb-12">
-            <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">Our Blog</h1>
-            <p className="pt-4 max-w-2xl mx-auto text-xl text-muted-foreground">Insights, thoughts, and trends from our team.</p>
+            <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">Explore</h1>
+            <p className="pt-4 max-w-2xl mx-auto text-xl text-muted-foreground">Find popular activities, restaurants & Cafes around New Zealand!</p>
         </div>
         {/* <Suspense fallback={<SkeletonLoadingUi/>}> */}
-        <LoadBlogList/>
+        <LoadPlaceList/>
         {/* </Suspense> */}
 
 
@@ -36,7 +36,7 @@ export default function BlogPage(){
 }
 
 
-async function LoadBlogList(){
+async function LoadPlaceList(){
    "use cache";
    cacheLife("hours");
    cacheTag('place');
@@ -57,7 +57,7 @@ async function LoadBlogList(){
                     </div>
 
                     <CardContent>
-                        <Link href={`/blog/${place._id}`}>
+                        <Link href={`/explore/${place._id}`}>
                         <h1 className="text-2xl font-bold hover:text-primary">{place.name}</h1>
                         </Link>
 
@@ -67,7 +67,7 @@ async function LoadBlogList(){
                     <CardFooter>
                         <Link className={buttonVariants({
                             className:"w-full"
-                        })} href={`/blog/${place._id}`}>Read more
+                        })} href={`/explore/${place._id}`}>Read more
                         </Link>
                     </CardFooter>
                 </Card>

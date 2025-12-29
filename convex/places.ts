@@ -18,6 +18,24 @@ export const getPlaces = query({
             })
         )
     }
+});
+
+export const getPlaceById = query({
+    args:{placeId: v.id('places')},
+    handler: async (ctx, args)=>{
+        const place = await ctx.db.get(args.placeId);
+
+        if (!place){
+            return null
+        }
+
+            const resolvedImageUrl = place.imageStorageId !== undefined ? await ctx.storage.getUrl(place.imageStorageId) : null;
+                return {
+                    ...place,
+                    imageUrl: resolvedImageUrl
+                }
+
+    }
 })
 
 export const createPlace = mutation({

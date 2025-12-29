@@ -11,9 +11,6 @@ import { placeSchema } from "./schemas/place";
 
 export async function createPlaceAction(values: z.infer<typeof placeSchema>) {
 
-console.log(values);
-
-
     try {
         const parsed = placeSchema.safeParse(values);
 
