@@ -2,7 +2,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { fetchQuery } from "convex/nextjs";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, MapPin, Tag } from "lucide-react";
 import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
@@ -15,12 +15,12 @@ interface PlaceIdRouteProps {
 }
 
 
-export async function generateMetadata({params}: PlaceIdRouteProps): Promise<Metadata>{
+export async function generateMetadata({ params }: PlaceIdRouteProps): Promise<Metadata> {
 
-    const {placeId} = await params;
-    const place = await fetchQuery(api.places.getPlaceById,{ placeId});
+    const { placeId } = await params;
+    const place = await fetchQuery(api.places.getPlaceById, { placeId });
 
-    if (!place){
+    if (!place) {
         return {
             title: "Place not found"
         }
@@ -32,20 +32,20 @@ export async function generateMetadata({params}: PlaceIdRouteProps): Promise<Met
     }
 }
 
-export default async function PlacePage({params}: PlaceIdRouteProps){
-    const { placeId} = await params;
-     const place = await fetchQuery(api.places.getPlaceById, {placeId});
+export default async function PlacePage({ params }: PlaceIdRouteProps) {
+    const { placeId } = await params;
+    const place = await fetchQuery(api.places.getPlaceById, { placeId });
 
-     if (!place) {
+    if (!place) {
         return (
             <div>
                 <h1 className="text-6xl font-extrabold text-red-500 py-20">No place found</h1>
             </div>
         )
-     }
+    }
 
     return (
-              <div className="max-w-3xl mx-auto py-8 px-4 animate-in fade-in duration-500 relative">
+        <div className="max-w-3xl mx-auto py-8 px-4 animate-in fade-in duration-500 relative">
             <Link className={buttonVariants({
                 variant: "outline", className: 'mb-4'
             })} href={'/explore'}>
@@ -62,13 +62,24 @@ export default async function PlacePage({params}: PlaceIdRouteProps){
             </div>
 
             <div className="space-y-4 flex flex-col">
+            
                 <h1 className="text-4xl font-bold tracking-tight text-foreground">{place.name}</h1>
+                <div className="flex items-center gap-1">
+                    <Tag size={20} />
+                    <p>{place.category}</p>
+                </div>
+
+                <div className="flex items-center gap-1">
+                    <MapPin size={20} className="text-red-400" />
+                    <p><span className="font-semibold text-xl">Gisborne</span> - 123 Gladstone Road, 4010</p>
+                </div>
+
                 <div className="flex gap-3 justify-end">
                     <Button variant={'secondary'}>Edit</Button>
-                    <DeletePlaceButton placeId={placeId} imageStorageId={place.imageStorageId}/>
-    
+                    <DeletePlaceButton placeId={placeId} imageStorageId={place.imageStorageId} />
+
                 </div>
-            
+
                 {/* <div className="flex items-center gap-2">
                        <p className="text-sm text-muted-foreground">Posted on: {new Date(post._creationTime).toLocaleDateString('en-NZ')}</p>
 
@@ -76,7 +87,7 @@ export default async function PlacePage({params}: PlaceIdRouteProps){
 
                  
                 </div> */}
-             
+
             </div>
 
 
