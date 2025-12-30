@@ -31,7 +31,7 @@ export async function createPlaceAction(values: z.infer<typeof placeSchema>) {
                 method: 'POST',
                 body: parsed.data.image,
                 headers: {
-                    "Content-Type": parsed.data.image.type
+                    "Content-Type": parsed.data.image!.type
                 }
             }
         );
@@ -50,7 +50,7 @@ export async function createPlaceAction(values: z.infer<typeof placeSchema>) {
             location:parsed.data.location,
             category:parsed.data.category,
             imageStorageId:storageId,
-            status:parsed.data.status
+            status:"bob"
 
 
         }, { token });

@@ -1,4 +1,4 @@
-import { regions } from "@/lib/helpers/constants";
+import { locations } from "@/lib/helpers/constants";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "../ui/select";
 
 export default function ExploreFilters(){
@@ -11,8 +11,8 @@ export default function ExploreFilters(){
       <SelectContent>
         <SelectGroup>
           <SelectLabel>Region</SelectLabel>
-          {regions.map((region, key)=>{
-            return <SelectItem key={key} value={region}>{region}</SelectItem>
+          {locations.map((location, key)=>{
+            return <SelectItem key={key} value={location}>{location}</SelectItem>
           })}
         </SelectGroup>
       </SelectContent>

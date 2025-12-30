@@ -1,12 +1,12 @@
+import { categories, locations } from "@/lib/helpers/constants"
 import z from "zod"
 
 export const placeSchema = z.object({
     name: z.string().min(3).max(50),
-    location: z.string().max(500),
-    status: z.string(),
-    category: z.string(),
+    location: z.enum(locations, "Please select a location"),
+    category: z.enum(categories, "Please select a category" ),
     description: z.string().min(10).max(500),
-    image: z.instanceof(File),
+    image: z.instanceof(File).optional(),
 
 })
 
