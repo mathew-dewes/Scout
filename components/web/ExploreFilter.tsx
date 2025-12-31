@@ -1,10 +1,34 @@
-import { locations } from "@/lib/helpers/constants";
+"use client"
+
+import { categories, locations } from "@/lib/helpers/constants";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "../ui/select";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export default function ExploreFilters(){
+
+    const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+
+
+  function updateParam(key: string, value: string){
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (!value || value === "all"){
+      params.delete(key)
+    } else {
+      params.set(key, value)
+    }
+
+    router.push(`${pathname}?${params.toString()}`, {scroll: false})
+  }
     return (
         <div className="flex gap-5">
-            <Select>
+            <Select 
+            value={searchParams.get('location') ?? ""}
+            onValueChange={(value) => updateParam('location', value)}
+            >
       <SelectTrigger className="w-45">
         <SelectValue placeholder="Region" />
       </SelectTrigger>
@@ -17,18 +41,20 @@ export default function ExploreFilters(){
         </SelectGroup>
       </SelectContent>
     </Select>
-            <Select>
+            <Select
+            value={searchParams.get('category') ?? ""}
+            onValueChange={(value) => updateParam('category', value)}
+            >
       <SelectTrigger className="w-45">
         <SelectValue placeholder="Category" />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectLabel>Fruits</SelectLabel>
-          <SelectItem value="apple">All</SelectItem>
-          <SelectItem value="banana">Banana</SelectItem>
-          <SelectItem value="blueberry">Blueberry</SelectItem>
-          <SelectItem value="grapes">Grapes</SelectItem>
-          <SelectItem value="pineapple">Pineapple</SelectItem>
+          <SelectLabel>Category</SelectLabel>
+          {categories.map((cat, key)=>{
+            return <SelectItem key={key} value={cat}>{cat}</SelectItem>
+          })}
+
         </SelectGroup>
       </SelectContent>
     </Select>

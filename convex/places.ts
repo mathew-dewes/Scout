@@ -4,29 +4,39 @@ import { authComponent } from "./auth";
 
 
 export const getPlaces = query({
-    args:{
-    location: v.optional(v.string()),
-    category: v.optional(v.string()),
+    args: {
+        location: v.optional(v.string()),
+        category: v.optional(v.string()),
     },
-    handler: async(ctx, args)=>{
-        const {location, category} = args;
+    handler: async (ctx, args) => {
+        const { location, category } = args;
 
         let query;
 
-        if (location && category){
+
+        if (location && category) {
             query = ctx.db.query('places').withIndex('by_location_category',
-                ((q)=> q.eq('location', location).eq('category', category)
-            ))
+                ((q) => q.eq('location', location).eq('category', category)
+                ));
+
+        } else if (location) {
+            query = query = ctx.db.query('places').withIndex('by_location',
+                ((q) => q.eq('location', location)
+                ))
+        } else if (category) {
+            query = query = ctx.db.query('places').withIndex('by_category',
+                ((q) => q.eq('category', category)
+                ))
         } else {
             query = ctx.db.query('places');
         }
 
-           const places = await query
-      .order("desc")
-      .collect()
-        
+        const places = await query
+            .order("desc")
+            .collect()
+
         return await Promise.all(
-            places.map(async(place)=>{
+            places.map(async (place) => {
                 const resolvedImageUrl = place.imageStorageId !== undefined ? await ctx.storage.getUrl(place.imageStorageId) : null;
                 return {
                     ...place,
@@ -38,19 +48,19 @@ export const getPlaces = query({
 });
 
 export const getPlaceById = query({
-    args:{placeId: v.id('places')},
-    handler: async (ctx, args)=>{
+    args: { placeId: v.id('places') },
+    handler: async (ctx, args) => {
         const place = await ctx.db.get(args.placeId);
 
-        if (!place){
+        if (!place) {
             return null
         }
 
-            const resolvedImageUrl = place.imageStorageId !== undefined ? await ctx.storage.getUrl(place.imageStorageId) : null;
-                return {
-                    ...place,
-                    imageUrl: resolvedImageUrl
-                }
+        const resolvedImageUrl = place.imageStorageId !== undefined ? await ctx.storage.getUrl(place.imageStorageId) : null;
+        return {
+            ...place,
+            imageUrl: resolvedImageUrl
+        }
 
     }
 })
@@ -59,7 +69,7 @@ export const createPlace = mutation({
     args: {
         name: v.string(),
         location: v.string(),
-        address:v.optional(v.string()),
+        address: v.optional(v.string()),
         status: v.string(),
         category: v.string(),
         description: v.string(),
@@ -78,7 +88,7 @@ export const createPlace = mutation({
             description: args.description,
             category: args.category,
             location: args.location,
-            address:args.address,
+            address: args.address,
             status: args.status,
             imageStorageId: args.imageStorageId
         });
@@ -88,9 +98,9 @@ export const createPlace = mutation({
 });
 
 export const deletePlace = mutation({
-    args:{placeId: v.id('places')},
-    handler: async(ctx, args)=>{
-             const user = await authComponent.safeGetAuthUser(ctx);
+    args: { placeId: v.id('places') },
+    handler: async (ctx, args) => {
+        const user = await authComponent.safeGetAuthUser(ctx);
 
         if (!user) {
             throw new ConvexError("Not authenticated");
@@ -103,14 +113,14 @@ export const deletePlace = mutation({
 })
 
 export const generateImageUploadUrl = mutation({
-  args:{},
-  handler: async(ctx)=>{
-    const user = await authComponent.safeGetAuthUser(ctx);
+    args: {},
+    handler: async (ctx) => {
+        const user = await authComponent.safeGetAuthUser(ctx);
 
-    if (!user){
-        throw new ConvexError("Not authenticated");
+        if (!user) {
+            throw new ConvexError("Not authenticated");
+        }
+
+        return await ctx.storage.generateUploadUrl();
     }
-
-    return await ctx.storage.generateUploadUrl();
-  }
 });

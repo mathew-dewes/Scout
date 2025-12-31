@@ -29,8 +29,8 @@ export default function CreateRoute() {
             name: "",
             description: "",
             image: undefined,
-            category: "",
-            location: "",
+            category: undefined,
+            location: undefined,
             address: ""
 
         }
