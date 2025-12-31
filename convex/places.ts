@@ -42,10 +42,11 @@ export const createPlace = mutation({
     args: {
         name: v.string(),
         location: v.string(),
+        address:v.optional(v.string()),
         status: v.string(),
         category: v.string(),
         description: v.string(),
-        imageStorageId: v.id("_storage") 
+        imageStorageId: v.id("_storage")
     },
     handler: async (ctx, args) => {
 
@@ -60,6 +61,7 @@ export const createPlace = mutation({
             description: args.description,
             category: args.category,
             location: args.location,
+            address:args.address,
             status: args.status,
             imageStorageId: args.imageStorageId
         });

@@ -50,7 +50,8 @@ export async function createPlaceAction(values: z.infer<typeof placeSchema>) {
             location:parsed.data.location,
             category:parsed.data.category,
             imageStorageId:storageId,
-            status:"bob"
+            status:"bob",
+            address:parsed.data.address
 
 
         }, { token });

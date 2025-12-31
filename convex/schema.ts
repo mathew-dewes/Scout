@@ -8,6 +8,7 @@ export default defineSchema({
         status: v.string(),
         category: v.string(),
         description: v.string(),
+        address: v.optional(v.string()),
         imageStorageId: v.optional(v.id('_storage')),
 
     }),

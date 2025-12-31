@@ -71,7 +71,8 @@ export default async function PlacePage({ params }: PlaceIdRouteProps) {
 
                 <div className="flex items-center gap-1">
                     <MapPin size={20} className="text-red-400" />
-                    <p><span className="font-semibold text-xl">Gisborne</span> - 123 Gladstone Road, 4010</p>
+                    <p><span className="font-semibold text-xl">{place.location}</span>
+                    {place.address ? ` - ${place.address}`  : ""}</p>
                 </div>
 
                 <div className="flex gap-3 justify-end">

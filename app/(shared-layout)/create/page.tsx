@@ -31,6 +31,7 @@ export default function CreateRoute() {
             image: undefined,
             category: "",
             location: "",
+            address: ""
 
         }
     });
@@ -139,7 +140,18 @@ export default function CreateRoute() {
                                         </Field>
                                     )} />
 
+                                    
+
                             </div>
+                                     <Controller name="address" control={form.control}
+                                render={({ field, fieldState }) => (
+                                    <Field>
+                                        <FieldLabel>Address</FieldLabel>
+                                        <Input aria-invalid={fieldState.invalid} placeholder="Address" {...field} />
+                                        {fieldState.invalid &&
+                                            <FieldError errors={[fieldState.error]} />}
+                                    </Field>
+                                )} />
 
                             <Controller name="image" control={form.control}
                                 render={({ field, fieldState }) => (
