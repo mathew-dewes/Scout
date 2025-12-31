@@ -47,8 +47,8 @@ export async function createPlaceAction(values: z.infer<typeof placeSchema>) {
         await fetchMutation(api.places.createPlace, {
             name: parsed.data.name,
             description:parsed.data.description,
-            location:parsed.data.location,
-            category:parsed.data.category,
+            location:parsed.data.location.toLocaleLowerCase(),
+            category:parsed.data.category.toLocaleLowerCase(),
             imageStorageId:storageId,
             status:"bob",
             address:parsed.data.address

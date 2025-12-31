@@ -4,9 +4,26 @@ import { authComponent } from "./auth";
 
 
 export const getPlaces = query({
-    args:{},
-    handler: async(ctx)=>{
-        const places = await ctx.db.query('places').order("desc").collect();
+    args:{
+    location: v.optional(v.string()),
+    category: v.optional(v.string()),
+    },
+    handler: async(ctx, args)=>{
+        const {location, category} = args;
+
+        let query;
+
+        if (location && category){
+            query = ctx.db.query('places').withIndex('by_location_category',
+                ((q)=> q.eq('location', location).eq('category', category)
+            ))
+        } else {
+            query = ctx.db.query('places');
+        }
+
+           const places = await query
+      .order("desc")
+      .collect()
         
         return await Promise.all(
             places.map(async(place)=>{

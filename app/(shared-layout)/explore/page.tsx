@@ -1,5 +1,6 @@
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import ExploreFilters from "@/components/web/ExploreFilter";
 // import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/convex/_generated/api";
@@ -8,6 +9,7 @@ import { Metadata } from "next";
 import { cacheLife, cacheTag } from "next/cache";
 import Image from "next/image";
 import Link from "next/link";
+import { Suspense } from "react";
 // import { Suspense } from "react";
 
 
@@ -16,9 +18,18 @@ title: "Blog | Next.JS Tutorial",
 description: "Read our latest articles and insights",
 category: "Web development",
 authors: [{name: "Mathew Dewes"}]
-}
+};
 
-export default function ExplorePage(){
+
+export default async function ExplorePage({searchParams} :
+    {searchParams: Promise<{ location: string | undefined, category: string | undefined}>}
+ ){
+
+   const {location, category} = await searchParams;
+
+   console.log(location);
+   
+
 
     return (
      <div className="py-12">
@@ -31,9 +42,11 @@ export default function ExplorePage(){
       <ExploreFilters/>
         </div>
   
-        {/* <Suspense fallback={<SkeletonLoadingUi/>}> */}
-        <PlaceList/>
-        {/* </Suspense> */}
+        <Suspense fallback={<SkeletonLoadingUi/>}>
+        <PlaceList
+        location={location}
+        category={category}/>
+        </Suspense>
 
 
 
@@ -42,11 +55,20 @@ export default function ExplorePage(){
 }
 
 
-async function PlaceList(){
-   "use cache";
-   cacheLife("hours");
-   cacheTag('place');
-    const places = await fetchQuery(api.places.getPlaces);
+async function PlaceList({
+  location,
+  category,
+}: {
+  location?: string
+  category?: string
+}){
+
+    const places = await fetchQuery(api.places.getPlaces,
+        {
+  location,
+  category,
+}
+    );
 
     return (
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -84,19 +106,19 @@ async function PlaceList(){
 }
 
 
-// function SkeletonLoadingUi(){
-//     return (
-//       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-//                 {[...Array(3)].map((_, i)=> (
-//                     <div className="flex flex-col space-y-3" key={i}>
-//                         <Skeleton className="h-48 w-full round-xl"/>
-//                         <div className="space-y-2 flex flex-col">
-//                             <Skeleton className="h-6 w-3/4"/>
-//                             <Skeleton className="h-4 w-full"/>
-//                             <Skeleton className="h-4 w-2/3"/>
-//                         </div>
-//                     </div>
-//                 ))}
-//             </div>
-//     )
-// }
+function SkeletonLoadingUi(){
+    return (
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {[...Array(3)].map((_, i)=> (
+                    <div className="flex flex-col space-y-3" key={i}>
+                        <Skeleton className="h-48 w-full round-xl"/>
+                        <div className="space-y-2 flex flex-col">
+                            <Skeleton className="h-6 w-3/4"/>
+                            <Skeleton className="h-4 w-full"/>
+                            <Skeleton className="h-4 w-2/3"/>
+                        </div>
+                    </div>
+                ))}
+            </div>
+    )
+}

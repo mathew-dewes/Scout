@@ -11,8 +11,11 @@ export default defineSchema({
         address: v.optional(v.string()),
         imageStorageId: v.optional(v.id('_storage')),
 
-    }),
-
+    })
+    .index('by_location', ['location'])
+    .index('by_category', ["category"])
+    .index('by_location_category', ['location', 'category'])
+,
     tasks: defineTable({
         isCompleted: v.boolean(),
         text: v.string(),
