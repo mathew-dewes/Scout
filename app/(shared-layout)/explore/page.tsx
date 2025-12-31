@@ -1,3 +1,4 @@
+import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -5,6 +6,7 @@ import ExploreFilters from "@/components/web/ExploreFilter";
 // import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/convex/_generated/api";
 import { fetchQuery } from "convex/nextjs";
+import { MapPin, Tag } from "lucide-react";
 import { Metadata } from "next";
 // import { cacheLife, cacheTag } from "next/cache";
 import Image from "next/image";
@@ -26,9 +28,6 @@ export default async function ExplorePage({searchParams} :
  ){
 
    const {location, category} = await searchParams;
-
-   console.log(location);
-   
 
 
     return (
@@ -75,6 +74,12 @@ async function PlaceList({
             {places?.map((place)=>(
                 <Card key={place._id} className="pt-0">
                     <div className="relative h-48 w-full overflow-hidden">
+                        <div>
+          <Badge className="absolute top-3 right-3 z-10 bg-sky-400" variant="default">
+                 <Tag size={20} />
+            {place.category}</Badge>
+                        </div>
+                 
                         <Image 
                         className="rounded-t-lg object-cover"
                         src={place.imageUrl ?? 
@@ -86,10 +91,22 @@ async function PlaceList({
 
                     <CardContent>
                         <Link href={`/explore/${place._id}`}>
+            
                         <h1 className="text-2xl font-bold hover:text-primary">{place.name}</h1>
+                     
+                  
                         </Link>
 
-                        <p className="text-muted-foreground line-clamp-3">{place.description}</p>
+                        <div className="mt-3">
+                            <div className="flex items-center gap-0.5">
+                        <MapPin size={17} className="text-red-400" />
+                        <p className="font-medium">{place.location} - <span className="font-light text-sm">{place.address}</span></p>
+                            </div>
+             
+   <p className="text-muted-foreground line-clamp-3 mt-1">{place.description}</p>
+                        </div>
+
+                     
                     </CardContent>
 
                     <CardFooter>

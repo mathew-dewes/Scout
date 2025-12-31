@@ -15,7 +15,7 @@ export default function ExploreFilters(){
   function updateParam(key: string, value: string){
     const params = new URLSearchParams(searchParams.toString());
 
-    if (!value || value === "all"){
+    if (!value || value === "All"){
       params.delete(key)
     } else {
       params.set(key, value)
