@@ -1,13 +1,17 @@
 import { Button, buttonVariants } from "@/components/ui/button";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
-import { fetchQuery } from "convex/nextjs";
+import { fetchQuery, preloadQuery } from "convex/nextjs";
 import { ArrowLeft, MapPin, Tag } from "lucide-react";
 import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
 import DeletePlaceButton from "@/components/web/DeletePlaceButton";
+import ReviewSection from "@/components/web/ReviewSection";
+import { getToken } from "@/lib/auth-server";
+import { redirect } from "next/navigation";
+import PlacePresence from "@/components/web/PlacePresence";
 
 
 interface PlaceIdRouteProps {
@@ -18,6 +22,9 @@ interface PlaceIdRouteProps {
 export async function generateMetadata({ params }: PlaceIdRouteProps): Promise<Metadata> {
 
     const { placeId } = await params;
+
+
+
     const place = await fetchQuery(api.places.getPlaceById, { placeId });
 
     if (!place) {
@@ -34,7 +41,17 @@ export async function generateMetadata({ params }: PlaceIdRouteProps): Promise<M
 
 export default async function PlacePage({ params }: PlaceIdRouteProps) {
     const { placeId } = await params;
-    const place = await fetchQuery(api.places.getPlaceById, { placeId });
+    const token = await getToken();
+
+    const [place, preLoadedReviews, userId] = await Promise.all([
+        fetchQuery(api.places.getPlaceById, { placeId }),
+        preloadQuery(api.reviews.getReviewsByPlaceId, { placeId }),
+        fetchQuery(api.presence.getUserId, {}, { token })
+    ]);
+
+    if (!userId) {
+        redirect('/auth/login')
+    }
 
     if (!place) {
         return (
@@ -62,7 +79,7 @@ export default async function PlacePage({ params }: PlaceIdRouteProps) {
             </div>
 
             <div className="space-y-4 flex flex-col">
-            
+
                 <h1 className="text-4xl font-bold tracking-tight text-foreground">{place.name}</h1>
                 <div className="flex items-center gap-1">
                     <Tag size={20} />
@@ -72,24 +89,24 @@ export default async function PlacePage({ params }: PlaceIdRouteProps) {
                 <div className="flex items-center gap-1">
                     <MapPin size={20} className="text-red-400" />
                     <p><span className="font-semibold text-xl">{place.location}</span>
-                    {place.address ? ` - ${place.address}`  : ""}</p>
+                        {place.address ? ` - ${place.address}` : ""}</p>
                 </div>
 
                 <div className="flex gap-3 justify-end">
                     <Link href={`/explore/${placeId}/edit`}>
-                    <Button className="cursor-pointer" variant={'secondary'}>Edit</Button></Link>
+                        <Button className="cursor-pointer" variant={'secondary'}>Edit</Button></Link>
 
                     <DeletePlaceButton placeId={placeId} imageStorageId={place.imageStorageId} />
 
                 </div>
 
-                {/* <div className="flex items-center gap-2">
-                       <p className="text-sm text-muted-foreground">Posted on: {new Date(post._creationTime).toLocaleDateString('en-NZ')}</p>
+                <div className="flex items-center gap-2">
+                       <p className="text-sm text-muted-foreground">Posted on: {new Date(place._creationTime).toLocaleDateString('en-NZ')}</p>
 
-                       {userId && <PostPresence roomId={post._id} userId={userId}/>}
+                       {userId && <PlacePresence roomId={place._id} userId={userId}/>}
 
                  
-                </div> */}
+                </div>
 
             </div>
 
@@ -100,7 +117,7 @@ export default async function PlacePage({ params }: PlaceIdRouteProps) {
 
             <Separator className="my-8" />
 
-            {/* <CommentSection preLoadedComments={preLoadedComments} /> */}
+            <ReviewSection preLoadedReviews={preLoadedReviews} />
 
 
 

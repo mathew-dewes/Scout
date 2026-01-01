@@ -16,13 +16,17 @@ export default defineSchema({
     })
     .index('by_location', ['location'])
     .index('by_category', ["category"])
-    .index('by_location_category', ['location', 'category'])
-,
-    tasks: defineTable({
-        isCompleted: v.boolean(),
-        text: v.string(),
-        
+    .index('by_location_category', ['location', 'category']),
+
+    reviews: defineTable({
+        placeId: v.id('places'),
+        authorId: v.string(),
+        authorName: v.string(),
+        body: v.string(),
+        rating: v.number()
+
     })
+
 });
 
 
