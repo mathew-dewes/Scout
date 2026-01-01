@@ -97,6 +97,39 @@ export const createPlace = mutation({
     },
 });
 
+export const editPlace = mutation({
+    args: {
+        placeId: v.id("places"),
+        name: v.string(),
+        location: v.string(),
+        address: v.optional(v.string()),
+        status: v.string(),
+        category: v.string(),
+        description: v.string(),
+        imageStorageId:v.optional(v.id("_storage")) 
+    },
+    handler: async (ctx, args) => {
+
+        const user = await authComponent.safeGetAuthUser(ctx);
+
+        if (!user) {
+            throw new ConvexError("Not authenticated");
+        }
+
+       await ctx.db.patch(args.placeId,{
+            name: args.name,
+            description: args.description,
+            category: args.category,
+            location: args.location,
+            address: args.address,
+            status: args.status,
+            imageStorageId: args.imageStorageId
+        });
+
+       
+    },
+});
+
 export const deletePlace = mutation({
     args: { placeId: v.id('places') },
     handler: async (ctx, args) => {

@@ -1,2 +1,5 @@
 export const locations = ['All' ,'Northland', 'Auckland', 'Waikato', 'Bay of Plenty', 'Gisborne', 'Hawkes Bay', 'Taranaki', 'Manawatū-Whanganui', 'Wellington', 'Tasman', 'Nelson', 'Marlborough', 'West Coast', 'Canterbury', 'Otago', 'Southland'] as const
 export const categories = ['All' ,'Food & Drink', 'Cafes', 'Restaurants', 'Bars & Pubs', 'Attractions', 'Outdoor & Nature', 'Activities & Experiences', 'Shopping & Retail', 'Accommodation', 'Events & Venues'] as const
+
+export type Category = (typeof categories)[number];
+export type Location = (typeof locations)[number];

@@ -69,13 +69,17 @@ async function PlaceList({
 }
     );
 
+    if (places.length === 0){
+        return <p>0 results found. Please try another search query</p>
+    }
+
     return (
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {places?.map((place)=>(
                 <Card key={place._id} className="pt-0">
                     <div className="relative h-48 w-full overflow-hidden">
                         <div>
-          <Badge className="absolute top-3 right-3 z-10 bg-sky-400" variant="default">
+          <Badge className="absolute top-3 right-3 z-10" variant="secondary">
                  <Tag size={20} />
             {place.category}</Badge>
                         </div>

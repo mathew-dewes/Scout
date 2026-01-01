@@ -76,7 +76,9 @@ export default async function PlacePage({ params }: PlaceIdRouteProps) {
                 </div>
 
                 <div className="flex gap-3 justify-end">
-                    <Button variant={'secondary'}>Edit</Button>
+                    <Link href={`/explore/${placeId}/edit`}>
+                    <Button className="cursor-pointer" variant={'secondary'}>Edit</Button></Link>
+
                     <DeletePlaceButton placeId={placeId} imageStorageId={place.imageStorageId} />
 
                 </div>
