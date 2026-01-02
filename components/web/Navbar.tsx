@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useConvexAuth } from "convex/react";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
+import SearchInput from "./SearchInput";
 
 export function Navbar() {
         const { isAuthenticated, isLoading } = useConvexAuth();
@@ -32,9 +33,9 @@ export function Navbar() {
             </div>
 
             <div className="flex items-center gap-2">
-                {/* <div className="hidden md:block mr-2">
+                <div className="hidden md:block mr-2">
                     <SearchInput/>
-                </div> */}
+                </div>
                 {isLoading ? null : isAuthenticated ? (
                     <Button onClick={()=> authClient.signOut({
                         fetchOptions:{

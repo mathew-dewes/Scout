@@ -16,7 +16,9 @@ export default defineSchema({
     })
     .index('by_location', ['location'])
     .index('by_category', ["category"])
-    .index('by_location_category', ['location', 'category']),
+    .index('by_location_category', ['location', 'category'])
+    .searchIndex('search_name', {searchField: 'name'})
+    .searchIndex('search_description', {searchField: 'description'}),
 
     reviews: defineTable({
         placeId: v.id('places'),
