@@ -38,10 +38,6 @@ export default function CreateRoute() {
 
     function onSubmit(values: z.infer<typeof placeSchema>) {
         startTransition(async () => {
-
-            console.log(values);
-
-
               await createPlaceAction(values);
 
         })

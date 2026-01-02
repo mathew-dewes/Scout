@@ -8,7 +8,7 @@ import { redirect } from "next/navigation";
 import { getToken } from "@/lib/auth-server";
 import { updateTag } from "next/cache";
 import { placeSchema } from "./schemas/place";
-import { Id } from "@/convex/_generated/dataModel";
+import { Doc, Id } from "@/convex/_generated/dataModel";
 
 export async function createPlaceAction(values: z.infer<typeof placeSchema>) {
 
@@ -72,21 +72,27 @@ export async function createPlaceAction(values: z.infer<typeof placeSchema>) {
 }
 
 
-export async function editPlaceAction(placeId: Id<"places">, values: z.infer<typeof placeSchema>) {
+export async function editPlaceAction(placeId: Id<"places">, values: z.infer<typeof placeSchema>, initialValue: Doc<"places">) {
 
     const token = await getToken();
-    let imageStorageId: Id<"_storage"> | undefined;
+
+
+    const oldImageStorageId = initialValue.imageStorageId;
     const parsed = placeSchema.safeParse(values);
+    
 
         if (!parsed.success) {
             throw new Error('Something went wrong')
         };
+
+            let imageStorageId: Id<"_storage"> | undefined = initialValue.imageStorageId;
         
 
     try {
 
         if (parsed.data.image){
-       const imageUrl = await fetchMutation(
+            
+              const imageUrl = await fetchMutation(
                 api.places.generateImageUploadUrl,
                 {},
                 { token }
@@ -110,7 +116,15 @@ export async function editPlaceAction(placeId: Id<"places">, values: z.infer<typ
 
             const { storageId } = await uploadResult.json();
             imageStorageId = storageId;
+
+            if (oldImageStorageId){
+        await fetchMutation(api.images.deleteImageById, { storageId: oldImageStorageId});
+            }
+      
+
+     
         }
+
   
         const updatePayload = {
                 name: parsed.data.name,
@@ -119,7 +133,7 @@ export async function editPlaceAction(placeId: Id<"places">, values: z.infer<typ
                 category: parsed.data.category,
                 status: "bob",
                 address: parsed.data.address,
-                    ...(imageStorageId && { imageStorageId }),
+                imageStorageId,
             }
 
      

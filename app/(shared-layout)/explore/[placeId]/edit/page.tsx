@@ -22,7 +22,6 @@ export default async function EditPlaceRoute({ params }: PlaceIdRouteProps) {
         )
     };
 
-    console.log(place);
     
     
     return (

@@ -42,10 +42,8 @@ export default function EditPlaceForm({placeId, place}:
     function onSubmit(values: z.infer<typeof placeSchema>) {
         startTransition(async () => {
 
-            console.log(values);
 
-
-              await editPlaceAction(placeId, values);
+              await editPlaceAction(placeId, values, place);
 
         })
 
@@ -170,7 +168,7 @@ export default function EditPlaceForm({placeId, place}:
                                         <Loader2 className="size-4 animate-spin" />
                                         <span>Loading...</span>
                                     </>
-                                ) : (<span>Create Place</span>)}
+                                ) : (<span>Update Place</span>)}
                             </Button>
                         </FieldGroup>
 
