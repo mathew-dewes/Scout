@@ -178,3 +178,12 @@ export async function deletePlaceAction(formData: FormData) {
     redirect('/explore')
 }
 
+
+export async function deleteReviewAction({reviewId}: {
+  reviewId: Id<"reviews">
+}){
+
+    const token = await getToken();
+
+    await fetchMutation(api.reviews.deleteReview, {reviewId}, {token})
+}

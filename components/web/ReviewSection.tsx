@@ -18,6 +18,8 @@ import { useTransition } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Separator } from "../ui/separator";
 import { reviewSchema } from "@/app/schemas/review";
+import { Rating } from "./Rating";
+import DeleteReviewButton from "./DeleteReviewButton";
 
 
 export default function ReviewSection(props: {
@@ -67,20 +69,35 @@ export default function ReviewSection(props: {
                          <Controller name="body" control={form.control}
                             render={({ field, fieldState }) => (
                                 <Field>
-                                    <FieldLabel>Full Name</FieldLabel>
+                                    <FieldLabel>Write review:</FieldLabel>
                                     <Textarea aria-invalid={fieldState.invalid} placeholder="Share your thoughts" {...field} />
                                     {fieldState.invalid &&
                                         <FieldError errors={[fieldState.error]} />}
                                 </Field>
                             )} />
+                         <Controller 
+                         name="rating" 
+                         control={form.control}
+                
 
-                           <Button disabled={isPending}>
+                            render={({ field, fieldState }) => (
+                                <Field>
+                                         <FieldLabel>Rating:</FieldLabel>
+                                <Rating value={field.value} onChange={field.onChange}/>
+                               
+                           
+                                    {fieldState.invalid &&
+                                        <FieldError errors={[fieldState.error]} />}
+                                </Field>
+                            )} />
+
+                           <Button className="mt-5" disabled={isPending}>
                             {isPending ? (
                                 <>
                                 <Loader2 className="size-4 animate-spin"/>
                                 <span>Loading...</span>
                                 </>
-                            ): (<span>Comment</span>)}
+                            ): (<span>Add Review</span>)}
                         </Button>
 
                 </form>
@@ -109,11 +126,21 @@ export default function ReviewSection(props: {
                                         <p className="font-semibold text-sm">{review.authorName}</p>
                                         <p className="text-muted-foreground text-xs">{new Date(review._creationTime).toLocaleDateString('en-NZ')}</p>
                                     </div>
-
-                                    <p className="text-sm text-foreground/90 whitespace-pre-wrap leading-relaxed">{review.body}</p>
+                                    <div className="mt-2">
+            <Rating size={15} value={review.rating}/>
+                                    </div>
+                        
+                                    <p className="text-sm text-foreground/90 whitespace-pre-wrap leading-relaxed mt-1">{review.body}</p>
+                                    <div className="flex mt-3">
+                                    <DeleteReviewButton reviewId={review._id}/>
+                                    </div>
+                         
+                                    <Separator className="mt-3"/>
                                 </div>
+                            
                         </div>
                     )}
+                  
 
                 </section>
 

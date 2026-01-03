@@ -35,4 +35,17 @@ export const createReview = mutation({
             }
         )
     }
+});
+
+export const deleteReview = mutation({
+    args:{reviewId: v.id('reviews')},
+    handler: async(ctx, args) =>{
+      const user = await authComponent.safeGetAuthUser(ctx);
+
+        if (!user) {
+            throw new ConvexError("Not authenticated");
+        }
+
+        await ctx.db.delete('reviews', args.reviewId);
+    }
 })
