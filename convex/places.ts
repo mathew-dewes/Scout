@@ -2,10 +2,12 @@ import { ConvexError, v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import { authComponent } from "./auth";
 import { Doc } from "./_generated/dataModel";
+import { paginationOptsValidator } from "convex/server";
 
 
 export const getPlaces = query({
     args: {
+        paginationOpts: paginationOptsValidator,
         location: v.optional(v.string()),
         category: v.optional(v.string()),
     },
@@ -32,19 +34,25 @@ export const getPlaces = query({
             query = ctx.db.query('places');
         }
 
-        const places = await query
+        const result = await query
             .order("desc")
-            .collect()
+            .paginate(args.paginationOpts);
 
-        return await Promise.all(
-            places.map(async (place) => {
-                const resolvedImageUrl = place.imageStorageId !== undefined ? await ctx.storage.getUrl(place.imageStorageId) : null;
-                return {
-                    ...place,
-                    imageUrl: resolvedImageUrl
-                }
-            })
-        )
+    const placesWithImages = await Promise.all(
+      result.page.map(async (place) => ({
+        ...place,
+        imageUrl: place.imageStorageId
+          ? await ctx.storage.getUrl(place.imageStorageId)
+          : null,
+      }))
+    );
+
+        return {
+      places: placesWithImages,
+      continueCursor: result.continueCursor,
+      isDone: result.isDone,
+    };
+
     }
 });
 

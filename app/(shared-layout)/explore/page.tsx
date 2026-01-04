@@ -1,18 +1,9 @@
-import { Badge } from "@/components/ui/badge";
-import { buttonVariants } from "@/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
+
 import ExploreFilters from "@/components/web/ExploreFilter";
-// import { Skeleton } from "@/components/ui/skeleton";
-import { api } from "@/convex/_generated/api";
-import { fetchQuery } from "convex/nextjs";
-import { MapPin, Tag } from "lucide-react";
 import { Metadata } from "next";
-// import { cacheLife, cacheTag } from "next/cache";
-import Image from "next/image";
-import Link from "next/link";
 import { Suspense } from "react";
-// import { Suspense } from "react";
+import { PlaceList } from "./_components/PlaceList";
+import { PlaceListSkeleton } from "./_components/PlaceListSkeleton";
 
 
 export const metadata: Metadata = {
@@ -24,12 +15,11 @@ authors: [{name: "Mathew Dewes"}]
 
 
 export default async function ExplorePage({searchParams} :
-    {searchParams: Promise<{ location: string | undefined, category: string | undefined}>}
+    {searchParams: Promise<{page?: string; location: string | undefined, category: string | undefined}>}
  ){
 
-   const {location, category} = await searchParams;
-
-
+   const { page: pageStr, location, category} = await searchParams;
+     const page = Math.max(Number(pageStr ?? 1), 1);
     return (
      <div className="py-12">
         <div className="text-center pb-12">
@@ -41,11 +31,34 @@ export default async function ExplorePage({searchParams} :
       <ExploreFilters/>
         </div>
   
-        <Suspense fallback={<SkeletonLoadingUi/>}>
+        <Suspense fallback={<PlaceListSkeleton/>}>
         <PlaceList
+        page={page}
         location={location}
-        category={category}/>
+        category={category}
+      
+      />
         </Suspense>
+        
+        
+        {/* <div className="mt-5">
+<Pagination>
+  <PaginationContent>
+    <PaginationItem>
+      <PaginationPrevious  href={`?${params.toString()}&page=${page - 1}`} />
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href={"#"} isActive>{page}</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationEllipsis />
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationNext href={`?${params.toString()}&page=${page + 1}`} />
+    </PaginationItem>
+  </PaginationContent>
+</Pagination>
+        </div> */}
 
 
 
@@ -54,92 +67,6 @@ export default async function ExplorePage({searchParams} :
 }
 
 
-async function PlaceList({
-  location,
-  category,
-}: {
-  location?: string
-  category?: string
-}){
-
-    const places = await fetchQuery(api.places.getPlaces,
-        {
-  location,
-  category,
-}
-    );
-
-    if (places.length === 0){
-        return <p>0 results found. Please try another search query</p>
-    }
-
-    return (
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {places?.map((place)=>(
-                <Card key={place._id} className="pt-0">
-                    <div className="relative h-48 w-full overflow-hidden">
-                        <div>
-          <Badge className="absolute top-3 right-3 z-10" variant="secondary">
-                 <Tag size={20} />
-            {place.category}</Badge>
-                        </div>
-                 
-                        <Image 
-                        className="rounded-t-lg object-cover"
-                        src={place.imageUrl ?? 
-                            "https://images.unsplash.com/photo-1512389142860-9c449e58a543?q=80&w=1169&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"} 
-                        alt="Post image"
-                        fill
-                        />
-                    </div>
-
-                    <CardContent>
-                        <Link href={`/explore/${place._id}`}>
-            
-                        <h1 className="text-2xl font-bold hover:text-primary">{place.name}</h1>
-                     
-                  
-                        </Link>
-
-                        <div className="mt-3">
-                            <div className="flex items-center gap-0.5">
-                        <MapPin size={17} className="text-red-400" />
-                        <p className="font-medium">{place.location} - <span className="font-light text-sm">{place.address}</span></p>
-                            </div>
-             
-   <p className="text-muted-foreground line-clamp-3 mt-1">{place.description}</p>
-                        </div>
-
-                     
-                    </CardContent>
-
-                    <CardFooter>
-                        <Link className={buttonVariants({
-                            className:"w-full"
-                        })} href={`/explore/${place._id}`}>Read more
-                        </Link>
-                    </CardFooter>
-                </Card>
-            ))}
-
-        </div>
-    )
-}
 
 
-function SkeletonLoadingUi(){
-    return (
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {[...Array(3)].map((_, i)=> (
-                    <div className="flex flex-col space-y-3" key={i}>
-                        <Skeleton className="h-48 w-full round-xl"/>
-                        <div className="space-y-2 flex flex-col">
-                            <Skeleton className="h-6 w-3/4"/>
-                            <Skeleton className="h-4 w-full"/>
-                            <Skeleton className="h-4 w-2/3"/>
-                        </div>
-                    </div>
-                ))}
-            </div>
-    )
-}
+
