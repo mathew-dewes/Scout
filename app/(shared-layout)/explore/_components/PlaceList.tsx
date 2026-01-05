@@ -50,6 +50,10 @@ if (currentPage > 1 && placesResult.places.length === 0) {
   redirect(`?page=${currentPage - 1}`);
 }
 
+if (displayPlaces.length === 0){
+  return <p>0 results found. Please try another search query</p>
+}
+
     return (
         <div>
  <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

@@ -1,5 +1,6 @@
 
 import CategorySlider from "./(home)/_components/CategorySlider";
+import RegionList from "./(home)/_components/RegionList";
 
 
 export default function HomePage(){
@@ -11,6 +12,7 @@ export default function HomePage(){
         </div>
 
 <CategorySlider/>
+<RegionList/>
     </div>
   )
 }

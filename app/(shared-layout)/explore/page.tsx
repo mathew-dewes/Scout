@@ -40,25 +40,7 @@ export default async function ExplorePage({searchParams} :
       />
         </Suspense>
         
-        
-        {/* <div className="mt-5">
-<Pagination>
-  <PaginationContent>
-    <PaginationItem>
-      <PaginationPrevious  href={`?${params.toString()}&page=${page - 1}`} />
-    </PaginationItem>
-    <PaginationItem>
-      <PaginationLink href={"#"} isActive>{page}</PaginationLink>
-    </PaginationItem>
-    <PaginationItem>
-      <PaginationEllipsis />
-    </PaginationItem>
-    <PaginationItem>
-      <PaginationNext href={`?${params.toString()}&page=${page + 1}`} />
-    </PaginationItem>
-  </PaginationContent>
-</Pagination>
-        </div> */}
+      
 
 
 
