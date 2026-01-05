@@ -8,6 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { redirect } from "next/navigation";
+import { Rating } from "@/components/web/Rating";
 
 
 type SearchParams = {
@@ -91,6 +92,11 @@ if (displayPlaces.length === 0){
 
                             <p className="text-muted-foreground line-clamp-3 mt-1">{place.description}</p>
                         </div>
+                        <div className="mt-2 flex gap-2">
+                        <Rating readOnly={true} value={place.averageRating} />
+                        <p className="text-muted-foreground line-clamp-3">{place.averageRating ?? 0}/5 ({place.reviewCount ?? 0})</p>
+                        </div>
+                    
 
 
                     </CardContent>

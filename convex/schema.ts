@@ -12,6 +12,8 @@ export default defineSchema({
         description: v.string(),
         address: v.optional(v.string()),
         imageStorageId: v.optional(v.id('_storage')),
+        averageRating: v.optional(v.number()),
+        reviewCount: v.optional(v.number())
 
     })
     .index('by_location', ['location'])

@@ -10,6 +10,7 @@ type RatingProps = {
   onChange?: (value: number) => void
   size?: number 
   className?: string
+  readOnly?: boolean
 }
 
 export function Rating({
@@ -18,6 +19,7 @@ export function Rating({
   onChange,
   size = 20,
   className,
+  readOnly = false,
 }: RatingProps) {
   const [hovered, setHovered] = React.useState<number | null>(null)
 
@@ -32,10 +34,13 @@ export function Rating({
           <button
             key={ratingValue}
             type="button"
-            onClick={() => onChange?.(ratingValue)}
-            onMouseEnter={() => setHovered(ratingValue)}
-            onMouseLeave={() => setHovered(null)}
-            className="rounded-sm focus:outline-none"
+            onClick={() => !readOnly && onChange?.(ratingValue)}
+            onMouseEnter={() => !readOnly && setHovered(ratingValue)}
+            onMouseLeave={() => !readOnly && setHovered(null)}
+            className={cn(
+              "rounded-sm focus:outline-none",
+              readOnly && "cursor-default"
+            )}
           >
             <Star size={size}
               className={cn(
