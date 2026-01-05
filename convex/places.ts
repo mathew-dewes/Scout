@@ -74,6 +74,29 @@ export const getPlaceById = query({
     }
 });
 
+export const getFeaturedPlaceByCategory = query({
+    args:{category: v.string()},
+    handler: async(ctx, args)=> {
+        const places = await ctx.db
+        .query('places')
+        .withIndex('by_category', ((q)=>(q.eq('category', args.category))))
+        .collect();
+
+        if (!places.length) return null;
+
+        const rated = places.filter(p => (p.averageRating ?? 0) > 0);
+
+        if (rated.length){
+            return rated.reduce((a, b)=>(
+                (b.averageRating ?? 0) > (a.averageRating ?? 0) ? b : a
+            ));
+        }
+
+        return places.reduce((a, b)=>
+        b._creationTime > a._creationTime ? b : a)
+    }
+})
+
 interface searchResultTypes {
     _id: string,
     title: string,

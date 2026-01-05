@@ -12,6 +12,7 @@ import ReviewSection from "@/components/web/ReviewSection";
 import { getToken } from "@/lib/auth-server";
 import { redirect } from "next/navigation";
 import PlacePresence from "@/components/web/PlacePresence";
+import { Rating } from "@/components/web/Rating";
 
 
 interface PlaceIdRouteProps {
@@ -84,6 +85,11 @@ export default async function PlacePage({ params }: PlaceIdRouteProps) {
                 <div className="flex items-center gap-1">
                     <Tag size={20} />
                     <p>{place.category}</p>
+                </div>
+
+                <div className="flex gap-2 items-center">
+                    <Rating value={place.averageRating} readOnly={true}/>
+                      <p className="text-muted-foreground line-clamp-3">{place.averageRating ?? 0}/5 ({place.reviewCount ?? 0})</p>
                 </div>
 
                 <div className="flex items-center gap-1">

@@ -92,7 +92,7 @@ if (displayPlaces.length === 0){
 
                             <p className="text-muted-foreground line-clamp-3 mt-1">{place.description}</p>
                         </div>
-                        <div className="mt-2 flex gap-2">
+                        <div className="mt-2 flex gap-2 items-center">
                         <Rating readOnly={true} value={place.averageRating} />
                         <p className="text-muted-foreground line-clamp-3">{place.averageRating ?? 0}/5 ({place.reviewCount ?? 0})</p>
                         </div>

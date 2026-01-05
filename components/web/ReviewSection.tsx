@@ -61,7 +61,7 @@ export default function ReviewSection(props: {
         <Card>
             <CardHeader className="flex flex-row items-center gap-2 border-b">
                 <MessageSquare className="size-5"/>
-                <h2 className="text-xl font-bold">{data.length} Comments</h2>
+                <h2 className="text-xl font-bold">{data.length} Reviews</h2>
             </CardHeader>
 
             <CardContent className="space-y-8">

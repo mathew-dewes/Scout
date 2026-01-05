@@ -1,8 +1,10 @@
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { FeaturedPlaceName } from "./FeaturedPlaceByCategory";
 
 const categoryCardsProps = [
   {title: 'Food & Drink', href: '/explore?category=Food+%26+Drink', src: '/categories/food.jpg', desc: 'Discover local food and drink spots, from quick bites to signature local flavours.'},
@@ -50,6 +52,15 @@ export default function CategorySlider(){
                             
                       
             <p className="text-muted-foreground line-clamp-3 text-center mt-1">{cat.desc}</p>
+                                 </div>
+                 <div className="mt-3">
+                  <div className="flex gap-2 items-center">
+                    <Star fill="gold" stroke="0"/>
+                    <FeaturedPlaceName category={cat.title}/>
+                  </div>
+                            
+                      
+
                                  </div>
   </CardContent>
 
