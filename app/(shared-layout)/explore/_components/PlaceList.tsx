@@ -18,7 +18,6 @@ type SearchParams = {
 }
 
 export async function PlaceList({ page, location, category }: SearchParams) {
-
   const params = new URLSearchParams();
   const currentPage = Math.max(Number(page ?? 1), 1);
   const PAGE_SIZE = 6;

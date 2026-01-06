@@ -3,6 +3,8 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import Image from "next/image";
 import Link from "next/link";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { FeaturedPlaceByLocation } from "./FeaturedPlaceByLocation";
+
 
 
 const regions = [
@@ -25,7 +27,7 @@ const regions = [
   
 ]
 
-export default function RegionList(){
+export default async function RegionList(){
 return (
     <div>
            <div>
@@ -59,6 +61,13 @@ return (
                       
             <p className="text-muted-foreground line-clamp-3 text-center mt-1">{cat.desc}</p>
                                  </div>
+
+                                      <div className="mt-3">
+                                           
+                                                           <FeaturedPlaceByLocation location={cat.title} />
+                                                     
+                                 
+                                                       </div>
   </CardContent>
 
   

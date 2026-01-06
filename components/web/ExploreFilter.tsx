@@ -4,8 +4,8 @@ import { categories, locations } from "@/lib/helpers/constants";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "../ui/select";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-export default function ExploreFilters(){
 
+export default function ExploreFilters(){
     const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();

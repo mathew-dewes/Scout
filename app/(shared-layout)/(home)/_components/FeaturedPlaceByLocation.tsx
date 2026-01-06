@@ -4,12 +4,12 @@ import { Star } from "lucide-react";
 import { fetchQuery } from "convex/nextjs";
 
 
-export async function FeaturedPlaceByCategory({ category }:
-    {category: string}
+export async function FeaturedPlaceByLocation({ location }:
+    {location: string}
 ) {
 
-  const featured = await fetchQuery(api.places.getFeaturedPlaceByCategory,
-    {category}
+  const featured = await fetchQuery(api.places.getFeaturedPlaceByLocation,
+    {location}
   );
 
     if (!featured) return null;
@@ -18,7 +18,7 @@ export async function FeaturedPlaceByCategory({ category }:
   return (
          <div className="flex gap-2 items-center">
                     <Star fill="gold" stroke="0"/>
-                    <p className="text-sm">{featured.name} - <span className="font-semibold">{featured.location}</span></p>
+                    <p className="text-sm">{featured.name} - <span className="font-semibold">{featured.address}</span></p>
                   </div>
 
 
