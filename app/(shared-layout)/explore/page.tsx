@@ -47,8 +47,3 @@ export default async function ExplorePage({searchParams} :
      </div>
     )
 }
-
-
-
-
-
