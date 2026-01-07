@@ -4,6 +4,8 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import Image from "next/image";
 import Link from "next/link";
 import { FeaturedPlaceByCategory } from "./FeaturedPlaceByCategory";
+import { Suspense } from "react";
+import { Loader2 } from "lucide-react";
 
 
 
@@ -22,7 +24,6 @@ const categoryCardsProps = [
 ]
 
 export default async function CategorySlider() {
-
 
   return (
     <div>
@@ -57,8 +58,16 @@ export default async function CategorySlider() {
                         <p className="text-muted-foreground line-clamp-3 text-center mt-1">{cat.desc}</p>
                       </div>
                       <div className="mt-3">
+                        <Suspense fallback={
+                          <div className="flex items-center gap-2">
+                              <Loader2 className="size-6 animate-spin"/>
+                            <p>Loading...</p>
+                          </div>
+                        }>
+      <FeaturedPlaceByCategory category={cat.title} />
+                        </Suspense>
           
-                          <FeaturedPlaceByCategory category={cat.title} />
+                    
                     
 
                       </div>

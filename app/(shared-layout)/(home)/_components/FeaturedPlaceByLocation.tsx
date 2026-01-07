@@ -2,13 +2,13 @@
 import { api } from "@/convex/_generated/api";
 import { Star } from "lucide-react";
 import { fetchQuery } from "convex/nextjs";
-import { connection } from "next/server";
+
 
 
 export async function FeaturedPlaceByLocation({ location }:
     {location: string}
 ) {
-  await connection()
+  "use cache";
   const featured = await fetchQuery(api.places.getFeaturedPlaceByLocation,
     {location}
   );

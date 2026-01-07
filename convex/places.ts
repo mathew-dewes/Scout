@@ -96,6 +96,9 @@ export const getFeaturedPlaceByLocation = query({
         b._creationTime > a._creationTime ? b : a)
     }
 })
+
+
+
 export const getFeaturedPlaceByCategory = query({
     args:{category: v.string()},
     handler: async(ctx, args)=> {

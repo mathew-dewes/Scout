@@ -9,6 +9,8 @@ import Link from "next/link";
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { redirect } from "next/navigation";
 import { Rating } from "@/components/web/Rating";
+import { connection } from "next/server";
+
 
 
 type SearchParams = {
@@ -18,6 +20,7 @@ type SearchParams = {
 }
 
 export async function PlaceList({ page, location, category }: SearchParams) {
+  await connection()
   const params = new URLSearchParams();
   const currentPage = Math.max(Number(page ?? 1), 1);
   const PAGE_SIZE = 6;
@@ -41,6 +44,9 @@ export async function PlaceList({ page, location, category }: SearchParams) {
   if (!placesResult) {
     return null;
   }
+
+  console.log(placesResult.places);
+  
 
 const displayPlaces = placesResult.places.slice(0, PAGE_SIZE);
 const hasNextPage = placesResult.places.length > PAGE_SIZE;

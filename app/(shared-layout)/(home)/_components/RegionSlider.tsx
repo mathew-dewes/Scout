@@ -4,6 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { FeaturedPlaceByLocation } from "./FeaturedPlaceByLocation";
+import { Suspense } from "react";
+import { Loader2 } from "lucide-react";
 
 
 
@@ -27,7 +29,7 @@ const regions = [
   
 ]
 
-export default async function RegionList(){
+export default async function RegionSlider(){
 return (
     <div>
            <div>
@@ -63,9 +65,17 @@ return (
                                  </div>
 
                                       <div className="mt-3">
+                                        <Suspense fallback={
+                                      <div className="flex items-center gap-2">
+                              <Loader2 className="size-6 animate-spin"/>
+                            <p>Loading...</p>
+                          </div>
+                                        }>
+ <FeaturedPlaceByLocation location={cat.title} />
+                                                    
+                                        </Suspense>
                                            
-                                                           <FeaturedPlaceByLocation location={cat.title} />
-                                                     
+                                                           
                                  
                                                        </div>
   </CardContent>

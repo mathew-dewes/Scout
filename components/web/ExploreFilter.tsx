@@ -21,7 +21,8 @@ export default function ExploreFilters(){
       params.set(key, value)
     }
 
-    router.push(`${pathname}?${params.toString()}`, {scroll: false})
+    router.push(`${pathname}?${params.toString()}`, {scroll: false});
+    router.refresh();
   }
     return (
         <div className="flex gap-5">

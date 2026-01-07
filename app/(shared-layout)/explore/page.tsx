@@ -28,7 +28,10 @@ export default async function ExplorePage({searchParams} :
         </div>
         <div className="mb-8">
             <p className="mb-2">Fitlers:</p>
-      <ExploreFilters/>
+            <Suspense>
+   <ExploreFilters/>
+            </Suspense>
+   
         </div>
   
         <Suspense fallback={<PlaceListSkeleton/>}>
