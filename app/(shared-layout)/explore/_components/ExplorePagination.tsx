@@ -1,10 +1,8 @@
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 
-export default function ExplorePagination({currentPage, hasNextPage}:
-    {currentPage: number, hasNextPage: boolean} 
+export default function ExplorePagination({currentPage, hasNextPage, params}:
+    {currentPage: number, hasNextPage: boolean, params: string} 
 ){
-
-      const params = new URLSearchParams();
     return (
          <div className="mt-5">
         <Pagination>
@@ -12,7 +10,7 @@ export default function ExplorePagination({currentPage, hasNextPage}:
          {currentPage > 1 && (
                 <PaginationItem>
                   <PaginationPrevious
-                    href={`?${params.toString()}&page=${currentPage - 1}`}
+                    href={`?${params}&page=${currentPage - 1}`}
                   />
                 </PaginationItem>
               )}
@@ -25,7 +23,7 @@ export default function ExplorePagination({currentPage, hasNextPage}:
                {hasNextPage && (
                   <PaginationItem>
                     <PaginationNext
-                      href={`?${params.toString()}&page=${currentPage + 1}`}
+                      href={`?${params}&page=${currentPage + 1}`}
                     />
                   </PaginationItem>
                 )}

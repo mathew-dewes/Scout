@@ -2,33 +2,50 @@ import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Rating } from "@/components/web/Rating";
-import {  Id } from "@/convex/_generated/dataModel";
+import { api } from "@/convex/_generated/api";
+import { fetchQuery } from "convex/nextjs";
 import { MapPin, Tag } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import ExplorePagination from "./ExplorePagination";
 
-type placeResult =  {
-    imageUrl: string | null;
-    _id: Id<"places">;
-    _creationTime: number;
-    address?: string | undefined;
-    imageStorageId?: Id<"_storage"> | undefined;
-    averageRating?: number | undefined;
-    reviewCount?: number | undefined;
-    name: string;
-    location: string;
-    status: string;
-    category: string;
-    description: string;
+
+export default async function PlaceGrid({page, location, category, currentParams}:
+{page: number, location?: string, category?: string, currentParams: string})
+{
+    "use cache"
+  const PAGE_SIZE = 6;
+  let cursor: string | null = null;
+  let placesResult;
+
+    for (let i = 1; i <= page; i++) {
+    placesResult = await fetchQuery(api.places.getPlaces, {
+      paginationOpts: {
+        numItems: PAGE_SIZE + 1,
+        cursor,
+
+      },
+      location,
+      category,
+    });
+
+    cursor = placesResult.continueCursor;
+  }
+  if (!placesResult) {
+    return null;
+  }
+  
+const places = placesResult.places.slice(0, PAGE_SIZE);
+const hasNextPage = placesResult.places.length > PAGE_SIZE;
+
+if (places.length === 0){
+  return <p>0 results found. Please try another search query</p>
 }
 
-export default async function PlaceGrid({places}:
-{places: placeResult[]})
-{
 
-"use cache";
 return (
-         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+         <div>
+   <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                     {places?.map((place) => (
                         <Card key={place._id} className="pt-0">
                             <div className="relative h-48 w-full overflow-hidden">
@@ -82,5 +99,8 @@ return (
                     ))}
         
                 </div>
+                <ExplorePagination currentPage={page} hasNextPage={hasNextPage} params={currentParams}/>
+         </div>
+      
     )
 }
