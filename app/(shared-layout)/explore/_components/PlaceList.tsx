@@ -6,28 +6,31 @@ import { fetchQuery } from "convex/nextjs";
 import { MapPin, Tag } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { redirect } from "next/navigation";
 import { Rating } from "@/components/web/Rating";
 import { connection } from "next/server";
+import ExplorePagination from "./ExplorePagination";
 
 
 
 type SearchParams = {
-    page?: number;
+    page: number;
     location?: string;
     category?: string;
 }
 
-export async function PlaceList({ page, location, category }: SearchParams) {
-  await connection()
-  const params = new URLSearchParams();
-  const currentPage = Math.max(Number(page ?? 1), 1);
+export async function PlaceList({ searchParams }: {
+  searchParams: Promise<SearchParams>
+}) {
+  "use cache"
+  
+   const { page: pageStr, location, category} = await searchParams;
+        const page = Math.max(Number(pageStr ?? 1), 1);
   const PAGE_SIZE = 6;
   let cursor: string | null = null;
   let placesResult;
 
-    for (let i = 1; i <= currentPage; i++) {
+    for (let i = 1; i <= page; i++) {
     placesResult = await fetchQuery(api.places.getPlaces, {
       paginationOpts: {
         numItems: PAGE_SIZE + 1,
@@ -45,15 +48,14 @@ export async function PlaceList({ page, location, category }: SearchParams) {
     return null;
   }
 
-  console.log(placesResult.places);
   
 
 const displayPlaces = placesResult.places.slice(0, PAGE_SIZE);
 const hasNextPage = placesResult.places.length > PAGE_SIZE;
 
 
-if (currentPage > 1 && placesResult.places.length === 0) {
-  redirect(`?page=${currentPage - 1}`);
+if (page > 1 && placesResult.places.length === 0) {
+  redirect(`?page=${page - 1}`);
 }
 
 if (displayPlaces.length === 0){
@@ -117,32 +119,7 @@ if (displayPlaces.length === 0){
 
         </div>
 
-                <div className="mt-5">
-<Pagination>
-  <PaginationContent>
- {currentPage > 1 && (
-        <PaginationItem>
-          <PaginationPrevious
-            href={`?${params.toString()}&page=${currentPage - 1}`}
-          />
-        </PaginationItem>
-      )}
-    <PaginationItem>
-      <PaginationLink href={"#"} isActive>{page}</PaginationLink>
-    </PaginationItem>
-    <PaginationItem>
-      <PaginationEllipsis />
-    </PaginationItem>
-       {hasNextPage && (
-          <PaginationItem>
-            <PaginationNext
-              href={`?${params.toString()}&page=${currentPage + 1}`}
-            />
-          </PaginationItem>
-        )}
-  </PaginationContent>
-</Pagination>
-        </div>
+               <ExplorePagination currentPage={page} hasNextPage={hasNextPage}/>
         </div>
        
     )

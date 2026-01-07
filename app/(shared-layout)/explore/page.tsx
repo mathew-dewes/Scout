@@ -13,13 +13,16 @@ category: "Web development",
 authors: [{name: "Mathew Dewes"}]
 };
 
+type SearchParams = {
+    page: number;
+    location?: string;
+    category?: string;
+}
 
 export default async function ExplorePage({searchParams} :
-    {searchParams: Promise<{page?: string; location: string | undefined, category: string | undefined}>}
+    {searchParams: Promise<SearchParams>}
  ){
 
-   const { page: pageStr, location, category} = await searchParams;
-     const page = Math.max(Number(pageStr ?? 1), 1);
     return (
      <div className="py-12">
         <div className="text-center pb-12">
@@ -36,9 +39,7 @@ export default async function ExplorePage({searchParams} :
   
         <Suspense fallback={<PlaceListSkeleton/>}>
         <PlaceList
-        page={page}
-        location={location}
-        category={category}
+        searchParams={searchParams}
       
       />
         </Suspense>
