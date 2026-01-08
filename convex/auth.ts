@@ -36,3 +36,14 @@ export const getCurrentUser = query({
     return authComponent.getAuthUser(ctx);
   },
 });
+
+
+export const getUserId = query({
+  args:{},
+  handler:async(ctx)=>{
+    const user = await authComponent.safeGetAuthUser(ctx);
+    return user?._id
+  }
+})
+
+

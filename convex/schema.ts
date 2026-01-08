@@ -29,7 +29,14 @@ export default defineSchema({
         body: v.string(),
         rating: v.number()
 
-    })
+    }),
+
+    userProfile: defineTable({
+        userId: v.string(),
+        bio: v.optional(v.string()),
+        imageStorageId: v.optional(v.id("_storage")),
+        imageUrl: v.optional(v.string()),
+    }).index('by_userId', ['userId'])
 
 });
 
