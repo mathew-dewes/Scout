@@ -13,7 +13,6 @@ import ExplorePagination from "./ExplorePagination";
 export default async function PlaceGrid({page, location, category, currentParams}:
 {page: number, location?: string, category?: string, currentParams: string})
 {
-    "use cache"
   const PAGE_SIZE = 6;
   let cursor: string | null = null;
   let placesResult;

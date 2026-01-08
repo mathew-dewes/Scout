@@ -26,6 +26,7 @@ export function Navbar() {
                     <Link className={buttonVariants({ variant: "ghost" })} href={'/'}>Home</Link>
                     <Link className={buttonVariants({ variant: "ghost" })} href={'/explore'}>Explore</Link>
                     <Link className={buttonVariants({ variant: "ghost" })} href={'/create'}>Create</Link>
+                    <Link className={buttonVariants({ variant: "ghost" })} href={'/profile'}>Profile</Link>
 
                 </div>
 

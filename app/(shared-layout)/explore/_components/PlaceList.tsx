@@ -21,7 +21,6 @@ export async function PlaceList({ searchParams }: {
     return (
         <div>
 <PlaceGrid page={page} category={category} location={location} currentParams={params.toString()}/>
-{/* <ExplorePagination currentPage={page} hasNextPage={hasNextPage}/> */}
         </div>
        
     )

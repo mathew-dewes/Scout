@@ -9,20 +9,20 @@ export default function ExplorePagination({currentPage, hasNextPage, params}:
           <PaginationContent>
          {currentPage > 1 && (
                 <PaginationItem>
-                  <PaginationPrevious
+                  <PaginationPrevious scroll={false} 
                     href={`?${params}&page=${currentPage - 1}`}
                   />
                 </PaginationItem>
               )}
             <PaginationItem>
-              <PaginationLink href={"#"} isActive>{currentPage}</PaginationLink>
+              <PaginationLink className="pointer-events-none" href={"#"} isActive>{currentPage}</PaginationLink>
             </PaginationItem>
             <PaginationItem>
               <PaginationEllipsis />
             </PaginationItem>
                {hasNextPage && (
                   <PaginationItem>
-                    <PaginationNext
+                    <PaginationNext scroll={false}
                       href={`?${params}&page=${currentPage + 1}`}
                     />
                   </PaginationItem>
